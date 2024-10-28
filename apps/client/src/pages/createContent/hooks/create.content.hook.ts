@@ -66,8 +66,18 @@ export const useCreateContent = () => {
 
 	useEffect(() => {
 		if (body && body.length < 5) setBodyError('Unvalid body')
+        else if(body && themeSelected?.categories.find(e => e.id === category)?.name.includes('image')) {
+            const tester = new Image()
+            tester.onerror= () => onErrorBody()
+            tester.src= body
+        }
+        else
 		setBodyError('')
 	}, [body])
+
+    const onErrorBody = () => {
+        setBodyError('Failed to load content')
+    }
 
 	const loadThemes = async () => {
 		const data = await getManager.work<Theme[]>({
@@ -127,5 +137,6 @@ export const useCreateContent = () => {
 		picture,
 		category,
 		onChangePicture,
+        onErrorBody
 	}
 }

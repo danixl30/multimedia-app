@@ -60,14 +60,11 @@ export default function ContentDetailPage() {
 											src={media.body}
 										/>
 									)}
-									{media.name
-										.toLowerCase()
-										.includes('text') && (
 										<TextareaAutosize
 											readOnly
 											defaultValue={media.body}
+                                            minRows={4}
 										/>
-									)}
 								</div>
 							))}
 						</Stack>

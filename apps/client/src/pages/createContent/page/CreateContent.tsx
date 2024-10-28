@@ -27,6 +27,7 @@ export default function CreateContentPage() {
 		bodyError,
 		selectTheme,
 		isSubmitable,
+        onErrorBody
 	} = useCreateContent()
 	return (
 		<>
@@ -92,16 +93,16 @@ export default function CreateContentPage() {
 								helper="Set content body"
 								error={bodyError}
 							/>
-							{body &&
+							{!bodyError && body &&
 								themeSelected.categories
 									.find((e) => e.id === category)
 									?.name.toLowerCase()
 									.includes('youtube') && (
 									<>
-										<ReactPlayer url={body} />
+										<ReactPlayer onError={() => onErrorBody()} url={body} />
 									</>
 								)}
-							{body &&
+							{!bodyError && body &&
 								themeSelected.categories
 									.find((e) => e.id === category)
 									?.name.toLowerCase()
@@ -113,17 +114,11 @@ export default function CreateContentPage() {
 										src={body}
 									/>
 								)}
-							{body &&
-								themeSelected.categories
-									.find((e) => e.id === category)
-									?.name.toLowerCase()
-									.includes('text') && (
 									<TextareaAutosize
 										minRows={3}
 										readOnly
 										defaultValue={body}
 									/>
-								)}
 						</>
 					)}
 					<Button
