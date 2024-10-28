@@ -7,7 +7,7 @@ import { useHomePage } from '../hooks/home.hook'
 import { ThemeSelector } from './Themes'
 
 export default function HomePage() {
-	const { contents, isLoading, getMore, onClickContent, isTop } =
+	const { contents, isLoading, getMore, onClickContent, isTop, categories } =
 		useHomePage()
 	const user = useContext(UserContext)
 	if (!contents.length && isLoading)
@@ -41,6 +41,26 @@ export default function HomePage() {
 					)}
 					<Grid2 size={10}>
 						<Box sx={{ flexGrow: 1 }}>
+							{categories.length !== 0 && (
+								<Stack spacing={2} direction="row">
+									{categories.map((e) => (
+										<Typography variant="h6">
+											{e.name +
+												': ' +
+												(e.count < 100
+													? e.count.toString()
+													: '+100')}
+										</Typography>
+									))}
+									<Typography variant="h6">
+										{'Total: ' +
+											categories.reduce(
+												(acc, e) => acc + e.count,
+												0,
+											)}
+									</Typography>
+								</Stack>
+							)}
 							<Grid2 container spacing={2}>
 								{contents.map((content) => (
 									<Grid2 key={content.id} size={4}>

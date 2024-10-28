@@ -1,7 +1,9 @@
+import Cookies from 'js-cookie'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { axiosGetManager } from '../../../utils/axios/axios.get.manager'
 import { Content } from '../types/content'
+import { CountCategory } from '../types/count.category'
 
 const perPage = 20
 export const useHomePage = () => {
@@ -11,6 +13,7 @@ export const useHomePage = () => {
 	const getManager = axiosGetManager()
 	const [searchParams] = useSearchParams()
 	const navigate = useNavigate()
+	const [categories, setCategories] = useState<CountCategory[]>([])
 
 	const fetchPage = async () => {
 		if (page === 0 || getManager.isLoading) return
@@ -45,6 +48,18 @@ export const useHomePage = () => {
 		await fetchPage()
 	}
 
+	const countContent = async () => {
+		if (!Cookies.get('session')) return
+		const data = await getManager.work<CountCategory[]>({
+			url: '/category/count/contents',
+			headers: {
+				authorization: Cookies.get('session'),
+			},
+			queries: {},
+		})
+		setCategories(data)
+	}
+
 	const onClickContent = (id: string) => navigate('/content/' + id)
 
 	const getMore = () => {
@@ -56,6 +71,7 @@ export const useHomePage = () => {
 
 	useEffect(() => {
 		calculatePagination()
+		countContent()
 	}, [searchParams])
 
 	return {
@@ -65,5 +81,6 @@ export const useHomePage = () => {
 		onClickContent,
 		page,
 		isTop: page === topPage.current,
+		categories,
 	}
 }
