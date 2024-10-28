@@ -14,6 +14,7 @@ const ContentDetailPage = lazy(
 const CreateContentPage = lazy(
 	() => import('./pages/createContent/page/CreateContent'),
 )
+const NotVisitorPage = lazy(() => import('./pages/notVisitor/page/NotVisitor'))
 
 export default function App() {
 	return (
@@ -60,17 +61,22 @@ export default function App() {
 								path="/content/:contentId"
 								element={
 									<>
-										<UserGuard>
+										<UserGuard alternativeRoute="/not/visitor">
 											<ContentDetailPage />
 										</UserGuard>
 									</>
 								}
 							/>
+                            <Route path="/not/visitor" element={<NotVisitorPage />} />
 							<Route path="*" element={<Navigate to="/" />} />
 						</Routes>
 					</BrowserRouter>
 				</UserContextProvider>
-				<Toaster />
+				<Toaster toastOptions={{
+                    style: {
+                        fontFamily: '"Roboto","Helvetica","Arial",sans-serif'
+                    }
+                }}/>
 			</Suspense>
 		</>
 	)

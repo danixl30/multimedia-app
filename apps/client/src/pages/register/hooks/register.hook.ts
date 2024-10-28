@@ -3,6 +3,7 @@ import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import { axiosPostManager } from '../../../utils/axios/axios.post.manager'
 import { emailRegExp } from '../../../utils/regExps/email'
+import { AxiosError } from 'axios'
 
 export type RegisterFormState = {
 	email: string
@@ -70,7 +71,10 @@ export const useRegisterPage = () => {
 			toast.success('Register successfull')
 			navigate('/login')
 		} catch (error: any) {
-			toast.error(error.message)
+            if ((error instanceof AxiosError) && error.status === 400) {
+                toast.error('Unvalid credentials')
+            } else
+            toast.error('Internal server error')
 		}
 	}
 
@@ -79,7 +83,7 @@ export const useRegisterPage = () => {
 			setEmailError('Unvalid email')
 		else setEmailError('')
 		if (formState?.password && formState.password.length < 5)
-			setPasswordError('Unvalid password')
+			setPasswordError('Password too short')
 		else setPasswordError('')
 		if (
 			formState.confirmPassword &&

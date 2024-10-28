@@ -102,7 +102,9 @@ export const useCreateContent = () => {
 				authorization: Cookie.get('session'),
 			},
 			url: '/content',
-		})
+		}).catch(() => {
+            toast.error('Internal server error')
+        })
 		toast.success('Content created')
 		navigate('/')
 	}

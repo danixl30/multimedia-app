@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../../../context/user.context'
 import { axiosPostManager } from '../../../utils/axios/axios.post.manager'
 import { emailRegExp } from '../../../utils/regExps/email'
+import { AxiosError } from 'axios'
 
 export type LoginFormState = {
 	email: string
@@ -49,7 +50,11 @@ export const useLoginPage = () => {
 			user.toggleSession()
 			navigate('/')
 		} catch (error: any) {
-			toast.error(error.message)
+            console.log(error)
+            if ((error instanceof AxiosError) && error.status === 400) {
+                toast.error('Unvalid credentials')
+            } else
+            toast.error('Internal server error')
 		}
 	}
 
