@@ -86,25 +86,27 @@ export const useCreateContent = () => {
 
 	const submit = async () => {
 		if (!isSubmitable()) toast.error('Not valid')
-		await postManager.work({
-			body: {
-				title,
-				theme: themeSelected?.id,
-				picture,
-				medias: [
-					{
-						category,
-						body,
-					},
-				],
-			},
-			headers: {
-				authorization: Cookie.get('session'),
-			},
-			url: '/content',
-		}).catch(() => {
-            toast.error('Internal server error')
-        })
+		await postManager
+			.work({
+				body: {
+					title,
+					theme: themeSelected?.id,
+					picture,
+					medias: [
+						{
+							category,
+							body,
+						},
+					],
+				},
+				headers: {
+					authorization: Cookie.get('session'),
+				},
+				url: '/content',
+			})
+			.catch(() => {
+				toast.error('Internal server error')
+			})
 		toast.success('Content created')
 		navigate('/')
 	}

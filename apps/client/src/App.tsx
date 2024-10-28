@@ -67,16 +67,22 @@ export default function App() {
 									</>
 								}
 							/>
-                            <Route path="/not/visitor" element={<NotVisitorPage />} />
+							<Route
+								path="/not/visitor"
+								element={<NotVisitorPage />}
+							/>
 							<Route path="*" element={<Navigate to="/" />} />
 						</Routes>
 					</BrowserRouter>
 				</UserContextProvider>
-				<Toaster toastOptions={{
-                    style: {
-                        fontFamily: '"Roboto","Helvetica","Arial",sans-serif'
-                    }
-                }}/>
+				<Toaster
+					toastOptions={{
+						style: {
+							fontFamily:
+								'"Roboto","Helvetica","Arial",sans-serif',
+						},
+					}}
+				/>
 			</Suspense>
 		</>
 	)

@@ -1,9 +1,9 @@
+import { AxiosError } from 'axios'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import { axiosPostManager } from '../../../utils/axios/axios.post.manager'
 import { emailRegExp } from '../../../utils/regExps/email'
-import { AxiosError } from 'axios'
 
 export type RegisterFormState = {
 	email: string
@@ -71,10 +71,9 @@ export const useRegisterPage = () => {
 			toast.success('Register successfull')
 			navigate('/login')
 		} catch (error: any) {
-            if ((error instanceof AxiosError) && error.status === 400) {
-                toast.error('Unvalid credentials')
-            } else
-            toast.error('Internal server error')
+			if (error instanceof AxiosError && error.status === 400) {
+				toast.error('Unvalid credentials')
+			} else toast.error('Internal server error')
 		}
 	}
 
